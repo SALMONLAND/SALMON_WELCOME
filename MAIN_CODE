@@ -1,0 +1,30 @@
+import cv2
+cap = cv2.VideoCapture(0)
+
+def find_vector_match(frame):
+    h, w, _ = frame.shape
+    found = False
+    
+    for i in range(0, h, 20):
+        for j in range(0, w, 20):
+            vector = frame[i, j]
+            if vector[2] > 200 and vector[0] < 150 and vector[1] < 150:
+                print(f"빨간색 발견! 좌표: ({j}, {i}), BGR값: {vector}")
+                found = True
+    
+    if not found:
+        pass
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    cv2.imshow('webcam', frame)
+    find_vector_match(frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+
+cap.release()
+cv2.destroyAllWindows()
